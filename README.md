@@ -1,3 +1,5 @@
+<h4><b>⚠️Work in Progress script is not yet complete⚠️</b></h4>
+
 # <a href="https://overthewire.org/wargames/bandit/">OverTheWire-Bandit-Solver</a>
 Forgot to save the password fam i got U. Bandit Solver can skip levels for you!! No need to keep the passwords anymore :D 
 
