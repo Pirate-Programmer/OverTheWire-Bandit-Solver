@@ -15,14 +15,44 @@ lvl8(){ sort data.txt | uniq -c | awk '!/10/ {print $NF}';exit; }
 lvl9(){ strings data.txt | awk ' /===/ {print $NF}' | tail -1;exit; }
 lvl10(){ base64 -d data.txt | awk '{print $NF}';exit; }
 lvl11(){ cat data.txt | tr 'a-zA-Z' 'n-za-mN-ZA-M' | awk '{print $NF}';exit; }
+lvl12(){
+  cd $(mktemp -d)
+  cp /home/bandit12/data.txt data.txt
+  xxd -r data.txt data.gz
+  gzip -d data.gz
+  mv data data.bz2
+  bzip2 -d data.bz2
+  mv data data.gz
+  gzip -d data.gz
+  mv data data.tar
+  tar -xf data.tar
+  mv data5.bin data5.tar
+  tar -xf data5.tar
+  mv data6.bin data6.bz2
+  bzip2 -d data6.bz2
+  mv data6 data6.tar
+  tar -xf data6.tar
+  mv data8.bin data8.gz
+  gzip -d data8.gz
+  awk '{print $NF}' data8
+  exit
+}
+lvl13(){
+  sshpass -p $pass scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
+  chmod 700 sshkey.private
+  pass=$(ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220 "cat /etc/bandit_pass/bandit14")
+  rm "sshkey.private"
+}
 
-
-
-
-
-for v in {0..11};
+for v in {0..13};
 do
-  pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
-  echo $pass
-  sleep 1
+  if [ $v -eq 13 ];
+  then
+	lvl13
+  else
+ 	 pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
+   fi
+
+ echo $v  $pass
+ sleep 2
 done
