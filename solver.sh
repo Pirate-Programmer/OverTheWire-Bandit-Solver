@@ -53,9 +53,10 @@ lvl16(){
    ssh -i sshkey.private  -o StrictHostKeyChecking=accept-new  bandit17@bandit.labs.overthewire.org -p2220 "cat /etc/bandit_pass/bandit17"
    exit
  }
+lvl17(){ diff passwords.old passwords.new |  awk '{print $NF}' | tail -1; exit; }
+lvl18(){ cat readme; exit; }
 
-
-for v in {0..16};
+for v in {0..17};
 do
   if [ $v -eq 13 ];
   then
