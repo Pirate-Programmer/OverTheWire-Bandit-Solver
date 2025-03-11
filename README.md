@@ -18,6 +18,12 @@ Forgot to save the password fam i got U. Bandit Solver can skip levels for you!!
 <h2>How to Run</h2>
 <code> bash solver.sh </code>
 
+<h2>Errors</h2>
+<ol>
+  <li>exec request failed on channel 0  --> try login in using ssh later. Resources unavailable at server side</li>
+  <li>conflicting passwords --> run script in a new terminal again ;D worked for me!!</li>
+</ol>
+
 <hr>
 Bandit Solver is my second ever script so pls do pardon my amateur work. I would visit bandit ctf on random days and it was quite frustating to see the passwords have been reset. As u can see the script has the solution of the levels emebbed cause i wanted to preserve the solutions where i can refer back to.
 
