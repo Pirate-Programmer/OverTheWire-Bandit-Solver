@@ -3,6 +3,7 @@
 
 pass=bandit0
 
+
 lvl0(){ awk '{print $NF}' readme | tail -n 2 | head -n 1;exit; }
 lvl1(){ cat ./-;exit; }
 lvl2(){ cat "spaces in this filename";exit; }
@@ -43,8 +44,18 @@ lvl13(){
   pass=$(ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220 "cat /etc/bandit_pass/bandit14")
   rm "sshkey.private"
 }
+lvl14(){ cd $(mktemp -d); (cat /etc/bandit_pass/bandit14 | nc localhost 30000) >> file; cat file | head -n 2| tail -1; exit; }
+lvl15(){ echo "$( cat /etc/bandit_pass/bandit15 | ncat --ssl localhost 30001)" | tail -1;exit; }
+lvl16(){
+   cd $(mktemp -d)
+   cat /etc/bandit_pass/bandit16 | ncat  --ssl localhost 31790 >>  sshkey.private
+   chmod 700 sshkey.private
+   ssh -i sshkey.private  -o StrictHostKeyChecking=accept-new  bandit17@bandit.labs.overthewire.org -p2220 "cat /etc/bandit_pass/bandit17"
+   exit
+ }
 
-for v in {0..13};
+
+for v in {0..16};
 do
   if [ $v -eq 13 ];
   then
@@ -53,6 +64,6 @@ do
  	 pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
    fi
 
- echo $v  $pass
- sleep 2
+   echo "$v -> $((v+1)) :  $pass"
+   sleep 1
 done
