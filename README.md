@@ -21,7 +21,7 @@ Forgot to save the password fam i got U. Bandit Solver can skip levels for you!!
 <h2>Possible Errors Encountered</h2>
 <ol>
   <li>exec request failed on channel 0  --> try login in using ssh later. Resources unavailable at server side</li>
-  <li>environment: fork: retry: Resource temporarily unavailable. --> Try again later issue at server side<li>
+  <li>environment: fork: retry: Resource temporarily unavailable. --> Try again later issue at server side</li>
   <li>conflicting passwords --> run script in a new terminal again ;D worked for me!!</li>
 </ol>
 
