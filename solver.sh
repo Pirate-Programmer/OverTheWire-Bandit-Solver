@@ -55,8 +55,15 @@ lvl16(){
  }
 lvl17(){ diff passwords.old passwords.new |  awk '{print $NF}' | tail -1; exit; }
 lvl18(){ cat readme; exit; }
+lvl19(){ ./bandit20-do cat /etc/bandit_pass/bandit20; exit; }
+lvl20()
+{
+   cat /etc/bandit_pass/bandit20 | nc -l -p 20000 & 
+   echo $(./suconnect 20000 1>/dev/null); exit;
+}
+lvl21() { cat $(cat /usr/bin/cronjob_bandit22.sh | awk '/>/{print $NF}');exit; }
 
-for v in {0..17};
+for v in {0..21};
 do
   if [ $v -eq 13 ];
   then
@@ -64,7 +71,6 @@ do
   else
  	 pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
    fi
-
    echo "$v -> $((v+1)) :  $pass"
    sleep 1
 done
