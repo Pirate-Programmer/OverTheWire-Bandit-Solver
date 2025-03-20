@@ -18,10 +18,11 @@ Forgot to save the password fam i got U. Bandit Solver can skip levels for you!!
 <h2>How to Run</h2>
 <code> bash solver.sh </code>
 
-<h2>Possible Errors Encountered</h2>
+<h2>⚠️Possible Errors ⚠️</h2>
 <ol>
+  <li> kex_exchange_identification: Connection closed by remote host --> recommed restart ssh using cmd: <code> sudo systemctl restart ssh </code></li>
   <li>exec request failed on channel 0  --> try login in using ssh later. Resources unavailable at server side</li>
-  <li>conflicting passwords --> run script in a new terminal again ;D worked for me!!</li>
+  <li>conflicting passwords --> run script in a new terminal again ;D worked for me!! or restart ssh using the cmd given above</li>
 </ol>
 
 <hr>
