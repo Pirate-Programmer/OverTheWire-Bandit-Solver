@@ -39,9 +39,10 @@ lvl12(){
   exit
 }
 lvl13(){
-  sshpass -p $pass scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
+  sshpass -p $pass scp -T -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
+
   chmod 700 sshkey.private
-  pass=$(ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220 "cat /etc/bandit_pass/bandit14")
+  pass=$(ssh -i sshkey.private -T -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null bandit14@bandit.labs.overthewire.org -p 2220 "cat /etc/bandit_pass/bandit14")
   rm "sshkey.private"
 }
 lvl14(){ cd $(mktemp -d); (cat /etc/bandit_pass/bandit14 | nc localhost 30000) >> file; cat file | head -n 2| tail -1; exit; }
@@ -50,7 +51,7 @@ lvl16(){
    cd $(mktemp -d)
    cat /etc/bandit_pass/bandit16 | ncat  --ssl localhost 31790 >>  sshkey.private
    chmod 700 sshkey.private
-   ssh -i sshkey.private  -o StrictHostKeyChecking=accept-new  bandit17@bandit.labs.overthewire.org -p2220 "cat /etc/bandit_pass/bandit17"
+   ssh -i sshkey.private -T -q -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/dev/null bandit17@bandit.labs.overthewire.org -p2220 "cat /etc/bandit_pass/bandit17"
    exit
  }
 lvl17(){ diff passwords.old passwords.new |  awk '{print $NF}' | tail -1; exit; }
@@ -58,7 +59,7 @@ lvl18(){ cat readme; exit; }
 lvl19(){ ./bandit20-do cat /etc/bandit_pass/bandit20; exit; }
 lvl20()
 {
-   cat /etc/bandit_pass/bandit20 | nc -l -p 20000 & 
+   cat /etc/bandit_pass/bandit20 | nc -l -p 20000 &
    echo $(./suconnect 20000 1>/dev/null)
    exit;
 }
@@ -74,15 +75,28 @@ lvl23()
    cat /tmp/huh
    exit
 }
+lvl24()
+{
+   cd  $(mktemp -d)
+   echo '#!/bin/bash' >> script.sh
+   echo 'pass=$(cat /etc/bandit_pass/bandit24)' >> script.sh
+   echo 'for pin in  {0000..9999}; do' >> script.sh
+   echo 'echo $pass $pin >> pass.txt' >> script.sh
+   echo 'done' >> script.sh
+   echo 'cat pass.txt | ncat localhost 30002 > ans.txt' >> script.sh
+   bash script.sh
+   grep -v Wrong ans.txt | awk '/is/{print $NF}'
+   exit
+}
 
-for v in {0..23};
+for v in {0..24};
 do
   if [ $v -eq 13 ];
   then
 	lvl13
   else
- 	 pass=$(sshpass -p $pass ssh  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
+ 	 pass=$(sshpass -p $pass ssh -T -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -p 2220 bandit$v@bandit.labs.overthewire.org "$(declare -f lvl$v);lvl$v")
    fi
    echo "$v -> $((v+1)) :  $pass"
-   sleep $((RANDOM % 2 + 1))
+#   sleep $((RANDOM % 2 + 1))
 done
