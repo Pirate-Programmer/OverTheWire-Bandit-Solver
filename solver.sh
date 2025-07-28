@@ -135,8 +135,74 @@ lvl27()
 
     cat repo/README | awk '{print $NF}'; exit ;
 }
+lvl28()
+{
+ cd $(mktemp -d)
+    PASSWORD=$(cat /etc/bandit_pass/bandit28)
+    echo '#!/bin/sh' > askpass.sh
+    echo "echo $PASSWORD" >> askpass.sh
+    chmod +x askpass.sh
+    export DISPLAY=:0
+    export SSH_ASKPASS="$PWD/askpass.sh"
+    export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 2220"
+    setsid git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo
+    
+    cd repo
+    git reset --quiet --hard fb0df1358b1ff146f581651a84bae622353a71c0
+    tail -2 README.md | head -1 | awk '{print $NF}'; exit ;
+}
+lvl29()
+{
+ cd $(mktemp -d)
+    PASSWORD=$(cat /etc/bandit_pass/bandit29)
+    echo '#!/bin/sh' > askpass.sh
+    echo "echo $PASSWORD" >> askpass.sh
+    chmod +x askpass.sh
+    export DISPLAY=:0
+    export SSH_ASKPASS="$PWD/askpass.sh"
+    export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 2220"
+    setsid git clone ssh://bandit29-git@localhost:2220/home/bandit29-git/repo
+    
+    cd repo 
+    git reset --quiet --hard a97d0dbf8fd910ead6fcf648829ff55c1a629c8e
+    grep 'password:' README.md | awk '{print $NF}'; exit
+}
+lvl30()
+{
+ cd $(mktemp -d)
+    PASSWORD=$(cat /etc/bandit_pass/bandit30)
+    echo '#!/bin/sh' > askpass.sh
+    echo "echo $PASSWORD" >> askpass.sh
+    chmod +x askpass.sh
+    export DISPLAY=:0
+    export SSH_ASKPASS="$PWD/askpass.sh"
+    export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 2220"
+    setsid git clone ssh://bandit30-git@localhost:2220/home/bandit30-git/repo
+    
+    cd repo 
+    git show secret
+}   
+lvl31()
+{
+ cd $(mktemp -d)
+    PASSWORD=$(cat /etc/bandit_pass/bandit31)
+    echo '#!/bin/sh' > askpass.sh
+    echo "echo $PASSWORD" >> askpass.sh
+    chmod +x askpass.sh
+    export DISPLAY=:0
+    export SSH_ASKPASS="$PWD/askpass.sh"
+    export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 2220"
+    setsid git clone ssh://bandit31-git@localhost:2220/home/bandit31-git/repo
+    
+    sleep 2
+    cd repo 
+    echo 'May I come in?' > key.txt
+    git add -f key.txt
+    git commit -q -m "adding key.txt" >/dev/null
+    git push -q 2>&1 | awk '$1 == "remote:" && $2 ~ /^[a-zA-Z0-9]{32}$/ { print $2 }'; exit;
+}
 
-for v in {0..27};
+for v in {0..31};
 do
   if [ $v -eq 13 ];
   then
